@@ -49,17 +49,28 @@ PORT=3000
 NODE_ENV=development
 ```
 
-### 3. Create PostgreSQL Database
+### 3. Create PostgreSQL Database (optional)
+If you prefer a full SQL database, install PostgreSQL and run:
 ```bash
 psql -U postgres
 CREATE DATABASE census_db;
 \q
 ```
+Set the environment variables accordingly and start with `npm run dev`.
 
-### 4. Start Server
-**Development (with hot reload):**
+### 4. Use Local JSON Database (no external DB required)
+A lightweight local database is included; it stores data in `backend/data/db.json`.
+Data persists between restarts but is simple JSON.
+Use this for quick development without installing PostgreSQL:
 ```bash
-npm run dev
+npm run dev-local
+```
+
+### 5. Start Server
+**Development (with hot reload and chosen storage):**
+```bash
+npm run dev          # uses PostgreSQL if configured, otherwise in-memory
+npm run dev-local    # uses JSON file storage locally
 ```
 
 **Production:**
@@ -67,7 +78,7 @@ npm run dev
 npm start
 ```
 
-Server will initialize tables automatically on startup.
+Server will initialize tables automatically on startup (for SQL) or load JSON data.
 
 ---
 

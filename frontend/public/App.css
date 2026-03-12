@@ -1,0 +1,82 @@
+/* App.css - Modernized Styles for AI Census PWA */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+
+:root {
+  --primary-color: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary-color: #64748b;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
+  --background-color: #f8fafc;
+  --card-background: #ffffff;
+  --text-color: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* [rest of CSS omitted for brevity; copy entire content previously in src/App.css here if needed] */
+
+/* header improvements */
+.app-header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.75rem;
+  letter-spacing: 0.5px;
+  color: var(--primary-color);
+}
+
+/* buttons modern effect */
+button[type="submit"],
+button[type="button"] {
+  border-radius: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+  transform: translateY(-1px);
+}
+
+/* auth form tweaks */
+.auth-form {
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-lg);
+  max-width: 420px;
+}
+
+/* census form card tweaks */
+.census-form-container {
+  border-radius: 1rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.form-section {
+  padding: 1.5rem 2rem;
+}

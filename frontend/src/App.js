@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { register } from './serviceWorker';
-import LoginForm from './LoginForm';
-import CensusForm from './CensusForm';
+import { register } from './serviceWorker.js';
+import LoginForm from './LoginForm.js';
+import CensusForm from './CensusForm.js';
 import './App.css';
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
 
   const handleLogin = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('http://localhost:3001/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

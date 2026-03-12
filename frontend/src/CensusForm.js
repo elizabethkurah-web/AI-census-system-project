@@ -64,7 +64,7 @@ function CensusForm({ token, isOnline }) {
 
     if (isOnline) {
       try {
-        const response = await fetch('http://localhost:3000/api/census/submit', {
+        const response = await fetch('http://localhost:3001/api/census/submit', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ function CensusForm({ token, isOnline }) {
     const successfulSyncs = [];
     for (const submission of pendingSubmissions) {
       try {
-        const response = await fetch('http://localhost:3000/api/census/submit', {
+        const response = await fetch('http://localhost:3001/api/census/submit', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
