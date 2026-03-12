@@ -1,14 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { register } from './serviceWorker';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './App.css';
 
-function App() {
-  return (
-    <div>
-      <h1>AI-Driven Census PWA</h1>
-    </div>
-  );
-}
-
-ReactDOM.render(<App />, document.getElementById('root'));
-register();
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
