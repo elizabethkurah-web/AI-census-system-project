@@ -1,28 +1,34 @@
 # Census Frontend - Progressive Web App
 
-A React-based Progressive Web App (PWA) for collecting census data with offline capabilities and GPS integration.
+A React-based Progressive Web App (PWA) for collecting census data with offline capabilities, GPS integration, and AI-powered validation.
 
 ## Features
 
 - **Offline-First**: Works without internet connection, syncs when online
-- **GPS Integration**: Automatic location tagging for geospatial verification
+- **GPS Integration**: Automatic location tagging with reverse geocoding for address names
 - **Responsive Design**: Mobile-optimized interface for field enumerators
 - **Service Worker**: Background sync and caching for reliability
 - **Authentication**: JWT-based login system
-- **Data Validation**: Client-side validation with user-friendly error messages
+- **Data Validation**: Client-side and server-side validation
+- **Error Boundaries**: Graceful error handling
+- **TypeScript**: Type-safe development
 
 ## Tech Stack
 
-- **React 18** - UI framework with hooks
+- **React 18** with TypeScript - UI framework with hooks
+- **Vite** - Build tool and development server
+- **React Router** - Client-side routing
+- **TanStack Query** - Data fetching and caching
+- **Framer Motion** - Animations
+- **Lucide React** - Icons
 - **Service Worker** - Offline functionality and caching
 - **Web APIs** - Geolocation, localStorage, IndexedDB
-- **CSS3** - Modern responsive styling
-- **Webpack** - Build system and development server
+- **Tailwind CSS** - Utility-first CSS framework
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 16+ and npm
+- Node.js 18+ and npm
 - Backend API running (see backend README)
 
 ### Installation
@@ -33,9 +39,9 @@ npm install
 
 ### Development
 ```bash
-npm start
+npm run dev
 ```
-Opens http://localhost:3000 with hot reload.
+Opens http://localhost:8080 with hot reload.
 
 ### Production Build
 ```bash
@@ -43,11 +49,55 @@ npm run build
 ```
 Creates optimized build in `dist/` folder.
 
+### PWA Setup
+Create PWA icons in `public/` directory:
+- `icon-192.png` (192x192 pixels)
+- `icon-512.png` (512x512 pixels)
+- `favicon.ico` (32x32 pixels)
+
+Use tools like RealFaviconGenerator or online converters to generate these from a source image.
+
 ## Project Structure
 
 ```
 frontend/
 ├── public/
+│   ├── manifest.json          # PWA manifest
+│   ├── serviceWorker.js       # Service worker for offline
+│   └── icons/                 # PWA icons
+├── src/
+│   ├── components/            # Reusable UI components
+│   ├── pages/                 # Page components
+│   ├── lib/                   # Utilities and API functions
+│   ├── hooks/                 # Custom React hooks
+│   └── test/                  # Test utilities
+├── package.json
+├── vite.config.ts             # Vite configuration
+└── README.md
+```
+
+## API Integration
+
+The frontend communicates with the backend API for:
+- User authentication (login/register)
+- Census data submission
+- Offline sync when back online
+
+API base URL is configured via `VITE_API_URL` environment variable.
+
+## Offline Functionality
+
+- Data is stored locally when offline
+- Automatically syncs when connection is restored
+- Service worker caches assets for offline access
+- GPS coordinates are captured and reverse geocoded to addresses
+
+## Contributing
+
+1. Follow TypeScript strict mode
+2. Add tests for new features
+3. Ensure accessibility compliance
+4. Update documentation as needed
 │   ├── index.html          # Main HTML template
 │   ├── manifest.json       # PWA manifest
 │   └── icon-*.png          # App icons (to be created)

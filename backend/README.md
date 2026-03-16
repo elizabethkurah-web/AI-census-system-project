@@ -1,23 +1,109 @@
 # Census Backend API
 
-A Node.js/Express server with PostgreSQL for census data collection, validation, and geospatial analysis.
+A Node.js/Express server with local JSON storage for census data collection, validation, and geospatial analysis. Designed for development and testing without external database dependencies.
 
-## Architecture
+## Features
+
+- **JWT Authentication**: Secure user registration and login
+- **Local JSON Storage**: File-based persistence for development
+- **Data Validation**: Joi schemas for input validation
+- **CORS Support**: Cross-origin requests enabled
+- **Error Handling**: Comprehensive error responses
+- **Geospatial Support**: GPS coordinate storage and validation
+
+## Tech Stack
+
+- **Node.js** with Express.js - Server framework
+- **JWT** - Token-based authentication
+- **bcrypt** - Password hashing
+- **Joi** - Input validation
+- **CORS** - Cross-origin resource sharing
+- **Helmet** - Security headers
+- **Compression** - Response compression
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+ and npm
+
+### Installation
+```bash
+cd backend
+npm install
+```
+
+### Environment Setup
+Create a `.env` file in the backend directory:
+```env
+PORT=3001
+JWT_SECRET=your_jwt_secret_key
+```
+
+### Development
+```bash
+npm run dev-local
+```
+Starts the server on http://localhost:3001 with local JSON storage.
+
+### Production
+```bash
+npm start
+```
+Starts the server in production mode.
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+
+### Census Data
+- `POST /api/census/submit` - Submit census record (requires auth)
+- `GET /api/census/records` - Get all records (requires auth)
+
+## Data Storage
+
+Data is stored in `backend/data/db.json`:
+```json
+{
+  "users": [...],
+  "censusRecords": [...]
+}
+```
+
+## Security
+
+- Passwords hashed with bcrypt
+- JWT tokens for session management
+- Input validation with Joi
+- CORS configured for frontend origin
+- Security headers with Helmet
+
+## Project Structure
 
 ```
 backend/
-├─ config/
-│  └─ database.js          # PostgreSQL connection pool
-├─ db/
-│  └─ schema.js            # Database initialization & schema
-├─ middleware/
-│  ├─ auth.js              # JWT authentication
-│  └─ errorHandler.js      # Global error handler
-├─ routes/
-│  ├─ auth.js              # User registration/login
-│  └─ census.js            # Census data submission & retrieval
-├─ schema/
-│  └─ validation.js        # Joi validation schemas
+├── data/
+│   └── db.json              # Local JSON database
+├── middleware/
+│   ├── auth.js              # JWT middleware
+│   └── errorHandler.js      # Error handling
+├── routes/
+│   ├── auth.js              # Auth endpoints
+│   └── census.js            # Census endpoints
+├── schema/
+│   └── validation.js        # Joi schemas
+├── index-local.js           # Main server file
+├── package.json
+└── README.md
+```
+
+## Migration to PostgreSQL
+
+For production, the code is structured to easily migrate to PostgreSQL by:
+1. Installing `pg` and `pg-pool`
+2. Updating database connection in `config/database.js`
+3. Modifying data access functions to use SQL queries instead of JSON file operations
 ├─ index.js                # Main server entry
 ├─ .env.example            # Environment variables template
 └─ package.json

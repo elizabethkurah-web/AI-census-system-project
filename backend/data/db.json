@@ -8,6 +8,15 @@
       "role": "supervisor",
       "status": "active",
       "created_at": "2026-03-12T13:13:22.615Z"
+    },
+    {
+      "id": 2,
+      "username": "test",
+      "email": "test@example.com",
+      "password_hash": "$2a$10$AglRdhWGPu.Ij2AWz11JM.HGxb0uEbTJACj3t6aXHxXXRqARRM1nC",
+      "role": "enumerator",
+      "status": "active",
+      "created_at": "2026-03-14T13:42:23.547Z"
     }
   ],
   "censusRecords": []
