@@ -14,7 +14,10 @@ const port = process.env.PORT || 3000;
 
 // Security middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082'],
+  credentials: true,
+}));
 
 // Compression middleware
 app.use(compression());

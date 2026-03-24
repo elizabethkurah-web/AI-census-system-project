@@ -5,7 +5,9 @@ import LoginForm from "@/components/LoginForm";
 import AppHeader from "@/components/AppHeader";
 import StatsCards from "@/components/StatsCards";
 import CensusForm from "@/components/CensusForm";
-import { api, LoginData, RegisterData } from "@/lib/api";
+import AnalyticsDashboard from "@/components/AnalyticsDashboard";
+import MappingDashboard from "@/components/MappingDashboard";
+import { api } from "@/lib/api";
 
 interface User {
   username: string;
@@ -30,7 +32,6 @@ export default function Index() {
       window.removeEventListener("offline", off);
     };
   }, []);
-
   const syncPendingSubmissions = async () => {
     const token = localStorage.getItem('token');
     if (!token || !navigator.onLine) return;
@@ -62,9 +63,9 @@ export default function Index() {
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
       setUser({ username: data.user.username, role: data.user.role });
-      syncPendingSubmissions(); // Sync after login
+      syncPendingSubmissions();
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       alert(error.message);
     },
   });
@@ -74,7 +75,7 @@ export default function Index() {
     onSuccess: () => {
       alert("Registration successful! Please login.");
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       alert(error.message);
     },
   });
@@ -97,7 +98,8 @@ export default function Index() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen bg-background">
+      <div className="absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(circle_at_top,hsl(var(--primary)/0.14),transparent_52%)]" />
       <AppHeader
         username={user.username}
         role={user.role}
@@ -107,34 +109,31 @@ export default function Index() {
         onLogout={handleLogout}
       />
 
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        {/* Welcome */}
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
+          className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between"
         >
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">
-            Welcome back, {user.username}!
-          </h2>
-          <p className="text-muted-foreground mt-1">Ready to collect some census data today?</p>
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">Welcome back, {user.username}!</h2>
+            <p className="mt-1 text-muted-foreground">
+              {activeTab === "collect" && "Capture household records quickly with a smoother field workflow."}
+              {activeTab === "analytics" && "Track trends, demographic balance, and collection momentum in real time."}
+              {activeTab === "mapping" && "Review spatial coverage and coordinate-tagged records across the field."}
+            </p>
+          </div>
+          <div className="rounded-full border border-border bg-card/80 px-4 py-2 text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
+            Active workspace: <span className="font-medium text-foreground capitalize">{activeTab}</span>
+          </div>
         </motion.div>
 
         <StatsCards />
 
-        {activeTab === "collect" && <CensusForm isOnline={isOnline} token={localStorage.getItem('token')} />}
-
-        {activeTab === "analytics" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card p-12 text-center">
-            <p className="text-muted-foreground">Analytics dashboard coming soon.</p>
-          </motion.div>
-        )}
-
-        {activeTab === "mapping" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card p-12 text-center">
-            <p className="text-muted-foreground">Mapping view coming soon.</p>
-          </motion.div>
-        )}
+        {activeTab === "collect" && <CensusForm isOnline={isOnline} />}
+        {activeTab === "analytics" && <AnalyticsDashboard />}
+        {activeTab === "mapping" && <MappingDashboard />}
       </main>
     </div>
   );

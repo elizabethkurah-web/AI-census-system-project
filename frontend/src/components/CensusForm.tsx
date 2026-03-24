@@ -1,18 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useMutation } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MapPin, RefreshCw, Send, Trash2, Loader2 } from "lucide-react";
-import { api, CensusData } from "@/lib/api";
+import { MapPin, RefreshCw, Send, Trash2 } from "lucide-react";
 
 interface CensusFormProps {
   isOnline: boolean;
-  token: string | null;
 }
 
-export default function CensusForm({ isOnline, token }: CensusFormProps) {
+export default function CensusForm({ isOnline }: CensusFormProps) {
   const [formData, setFormData] = useState({
     household_id: "",
     first_name: "",
@@ -29,32 +26,6 @@ export default function CensusForm({ isOnline, token }: CensusFormProps) {
     JSON.parse(localStorage.getItem("pendingSubmissions") || "[]")
   );
   const [currentLocation, setCurrentLocation] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [locationName, setLocationName] = useState("");
-
-  const submitMutation = useMutation({
-    mutationFn: (data: CensusData) => api.submitCensus(data, token || ''),
-    onSuccess: () => {
-      alert("Census record submitted successfully!");
-      resetForm();
-    },
-    onError: (error) => {
-      alert(error.message);
-    },
-  });
-
-  const getAddressFromCoords = async (lat: number, lon: number) => {
-    try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-      const data = await res.json();
-      const address = data.display_name || `${lat}, ${lon}`;
-      setLocationName(address);
-      setFormData({ ...formData, location_address: address, gps_latitude: lat, gps_longitude: lon });
-    } catch {
-      const fallback = `${lat}, ${lon}`;
-      setLocationName(fallback);
-      setFormData({ ...formData, location_address: fallback, gps_latitude: lat, gps_longitude: lon });
-    }
-  };
 
   const generateHouseholdId = () => {
     const id = `HH-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -64,10 +35,10 @@ export default function CensusForm({ isOnline, token }: CensusFormProps) {
   const getLocation = () => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
-      async (pos) => {
+      (pos) => {
         const loc = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
         setCurrentLocation(loc);
-        await getAddressFromCoords(loc.latitude, loc.longitude);
+        setFormData({ ...formData, gps_latitude: loc.latitude, gps_longitude: loc.longitude });
       },
       () => alert("Unable to get location."),
       { enableHighAccuracy: true, timeout: 10000 }
@@ -80,7 +51,6 @@ export default function CensusForm({ isOnline, token }: CensusFormProps) {
       gender: "", phone: "", location_address: "", gps_latitude: null, gps_longitude: null,
     });
     setCurrentLocation(null);
-    setLocationName("");
   };
 
   const validateForm = () => {
@@ -200,13 +170,13 @@ export default function CensusForm({ isOnline, token }: CensusFormProps) {
               <Button type="button" variant="secondary" onClick={getLocation}>
                 <MapPin className="w-4 h-4 mr-1.5" /> Get Current Location
               </Button>
-              {locationName && (
+              {currentLocation && (
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="text-xs font-mono text-muted-foreground bg-muted px-3 py-1.5 rounded-md"
                 >
-                  {locationName}
+                  {currentLocation.latitude.toFixed(6)}, {currentLocation.longitude.toFixed(6)}
                 </motion.span>
               )}
             </div>
@@ -216,7 +186,7 @@ export default function CensusForm({ isOnline, token }: CensusFormProps) {
         {/* Actions */}
         <div className="flex gap-3 pt-4 border-t border-border">
           <Button type="submit" disabled={isSubmitting} className="flex-1">
-            {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Send className="w-4 h-4 mr-2" />}
+            <Send className="w-4 h-4 mr-2" />
             {isSubmitting ? "Submitting..." : isOnline ? "Submit Online" : "Store for Later"}
           </Button>
           <Button type="button" variant="outline" onClick={resetForm}>
