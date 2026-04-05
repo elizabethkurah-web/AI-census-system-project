@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Activity, BarChart3, Clock3, Database, PieChart, Signal, Users2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { generateInsights } from "@/lib/ai";
+import NaturalLanguageQuery from "@/components/NaturalLanguageQuery";
 import {
   Bar,
   BarChart,
@@ -170,6 +172,8 @@ export default function AnalyticsDashboard() {
     value: records.filter((record) => getAgeBand(record.age) === band).length,
   }));
 
+  const insights = generateInsights(records);
+
   const recentTrend = [...records]
     .slice(0, 8)
     .reverse()
@@ -231,6 +235,28 @@ export default function AnalyticsDashboard() {
           </div>
         </div>
       </motion.div>
+
+      <div className="grid gap-4 xl:grid-cols-[1.8fr_1.2fr]">
+        <Card className="glass-card-hover border-border/80 bg-card/90">
+          <CardContent className="space-y-4 p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">AI Insights</p>
+                <h4 className="mt-2 text-xl font-semibold text-foreground">Predicted field intelligence</h4>
+              </div>
+            </div>
+            <div className="space-y-3 text-sm text-muted-foreground">
+              {insights.map((insight, index) => (
+                <p key={index} className="rounded-2xl bg-muted p-3 text-foreground/90">
+                  {insight}
+                </p>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <NaturalLanguageQuery records={records} />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {statCards.map((card, index) => (

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Compass, Locate, MapPinned, RadioTower, Route, Satellite } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { getMappingRecommendation } from "@/lib/ai";
 
 interface CensusRecord {
   household_id: string;
@@ -132,6 +133,8 @@ export default function MappingDashboard() {
   const onlineNodes = mappedRecords.filter((record) => record.submission_type === "online").length;
   const offlineNodes = mappedRecords.length - onlineNodes;
   const northernmost = [...mappedRecords].sort((a, b) => (b.gps_latitude ?? 0) - (a.gps_latitude ?? 0))[0];
+  const allRecords = [...fallbackRecords, ...readPendingRecords()];
+  const recommendation = getMappingRecommendation(allRecords);
 
   return (
     <section className="space-y-6" aria-labelledby="mapping-heading">
@@ -197,6 +200,21 @@ export default function MappingDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="glass-card-hover border-border/80 bg-card/90">
+        <CardContent className="space-y-4 p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">AI Recommendation</p>
+              <h4 className="mt-2 text-xl font-semibold text-foreground">Mapping strategy suggestion</h4>
+            </div>
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <Route className="h-5 w-5" />
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">{recommendation}</p>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.5fr_0.9fr]">
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.35 }}>

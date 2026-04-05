@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BarChart3, FileText, TrendingUp, Map, LogOut } from "lucide-react";
+import { BarChart3, FileText, TrendingUp, Map, LogOut, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface AppHeaderProps {
@@ -15,6 +15,7 @@ const navItems = [
   { id: "collect", label: "Collect", icon: FileText },
   { id: "analytics", label: "Analytics", icon: TrendingUp },
   { id: "mapping", label: "Mapping", icon: Map },
+  { id: "assistant", label: "AI Assistant", icon: Bot },
 ];
 
 export default function AppHeader({ username, role, isOnline, activeTab, onTabChange, onLogout }: AppHeaderProps) {

@@ -24,6 +24,11 @@ export interface CensusData {
   gps_longitude: number | null;
   submission_type: string;
   timestamp: string;
+  employment_status?: string;
+  education_level?: string;
+  health_status?: string;
+  has_disability?: boolean;
+  disability_type?: string;
 }
 
 export const api = {

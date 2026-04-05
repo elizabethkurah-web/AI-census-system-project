@@ -7,7 +7,8 @@ import StatsCards from "@/components/StatsCards";
 import CensusForm from "@/components/CensusForm";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
 import MappingDashboard from "@/components/MappingDashboard";
-import { api } from "@/lib/api";
+import AIAssistant from "@/components/AIAssistant";
+import { api, type RegisterData } from "@/lib/api";
 
 interface User {
   username: string;
@@ -122,6 +123,7 @@ export default function Index() {
               {activeTab === "collect" && "Capture household records quickly with a smoother field workflow."}
               {activeTab === "analytics" && "Track trends, demographic balance, and collection momentum in real time."}
               {activeTab === "mapping" && "Review spatial coverage and coordinate-tagged records across the field."}
+              {activeTab === "assistant" && "Get instant help with census questions, form guidance, and data validation."}
             </p>
           </div>
           <div className="rounded-full border border-border bg-card/80 px-4 py-2 text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
@@ -134,6 +136,7 @@ export default function Index() {
         {activeTab === "collect" && <CensusForm isOnline={isOnline} />}
         {activeTab === "analytics" && <AnalyticsDashboard />}
         {activeTab === "mapping" && <MappingDashboard />}
+        {activeTab === "assistant" && <AIAssistant />}
       </main>
     </div>
   );
